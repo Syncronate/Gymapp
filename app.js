@@ -8,12 +8,18 @@ const workouts = [
         icon: '🍑',
         color: 'purple',
         exercises: [
-            { name: 'Sollevamento Gambe da Stesa', details: 'Addominali', rest: 60, duration: null },
-            { name: 'Stacco Rumeno Riscaldamento', details: '2x15 con 10kg', rest: 30, duration: null },
-            { name: 'Stacco Rumeno', details: '4x12 con 30kg', rest: 90, duration: null },
-            { name: 'Leg Abduction con Fascia', details: '3x15 per gamba', rest: 90, duration: null },
-            { name: 'Squat Bulgari', details: '2x15 per gamba con 10kg', rest: 90, duration: null },
-            { name: 'Donkey Kicks', details: '3x15 per gamba con fascia', rest: 60, duration: null }
+            { name: 'Sollevamento Gambe da Stesa', details: 'Addominali', rest: -1, duration: null },
+            { name: 'Stacco Rumeno Riscaldamento', details: '2x15 con 10kg', rest: -1, duration: null },
+            { name: 'Stacco Rumeno - Serie 1', details: '20 Ripetizioni', rest: 60, duration: null },
+            { name: 'Stacco Rumeno - Serie 2', details: '20 Ripetizioni', rest: 60, duration: null },
+            { name: 'Stacco Rumeno - Serie 3', details: '20 Ripetizioni', rest: 60, duration: null },
+            { name: 'Stacco Rumeno - Serie 4', details: '20 Ripetizioni', rest: -1, duration: null },
+            { name: 'Squat Bulgari - Serie 1', details: '15 per gamba con 10kg', rest: 60, duration: null },
+            { name: 'Squat Bulgari - Serie 2', details: '15 per gamba con 10kg', rest: -1, duration: null },
+            { name: 'Donkey Kicks - Serie 1', details: '25 per gamba con fascia', rest: 60, duration: null },
+            { name: 'Donkey Kicks - Serie 2', details: '25 per gamba con fascia', rest: 60, duration: null },
+            { name: 'Donkey Kicks - Serie 3', details: '25 per gamba con fascia', rest: 60, duration: null },
+            { name: 'Donkey Kicks - Serie 4', details: '25 per gamba con fascia', rest: -1, duration: null }
         ],
         tips: {
             'Stacco Rumeno': 'Mantieni la schiena dritta e spingi i glutei indietro. Le ginocchia leggermente flesse. Contrai i glutei nella risalita.',
@@ -27,10 +33,21 @@ const workouts = [
         icon: '🔥',
         color: 'purple',
         exercises: [
-            { name: 'Hip Thrust Riscaldamento', details: 'Senza peso', rest: 30, duration: null },
-            { name: 'Hip Thrust', details: '5x20 con 50kg', rest: 120, duration: null },
-            { name: 'Leg Abduction Stesa', details: '2x40 con 2kg', rest: 90, duration: null },
-            { name: 'Affondi', details: '2x15 per gamba con 10kg', rest: 90, duration: null }
+            { name: 'Hip Thrust Riscaldamento', details: 'Senza peso', rest: -1, duration: null },
+            { name: 'Hip Thrust - Serie 1', details: '30 Ripetizioni', rest: 60, duration: null },
+            { name: 'Hip Thrust - Serie 2', details: '30 Ripetizioni', rest: 60, duration: null },
+            { name: 'Hip Thrust - Serie 3', details: '30 Ripetizioni', rest: 60, duration: null },
+            { name: 'Hip Thrust - Serie 4', details: '30 Ripetizioni', rest: -1, duration: null },
+            { name: 'Leg Abduction Stesa - Serie 1', details: '50 per gamba', rest: 60, duration: null },
+            { name: 'Leg Abduction Stesa - Serie 2', details: '50 per gamba', rest: 60, duration: null },
+            { name: 'Leg Abduction Stesa - Serie 3', details: '50 per gamba', rest: 60, duration: null },
+            { name: 'Leg Abduction Stesa - Serie 4', details: '50 per gamba', rest: -1, duration: null },
+            { name: 'Affondi - Serie 1', details: '20 per gamba', rest: 60, duration: null },
+            { name: 'Affondi - Serie 2', details: '20 per gamba', rest: -1, duration: null },
+            { name: 'Leg Abduction con Fascia - Serie 1', details: '25 per gamba', rest: 60, duration: null },
+            { name: 'Leg Abduction con Fascia - Serie 2', details: '25 per gamba', rest: 60, duration: null },
+            { name: 'Leg Abduction con Fascia - Serie 3', details: '25 per gamba', rest: 60, duration: null },
+            { name: 'Leg Abduction con Fascia - Serie 4', details: '25 per gamba', rest: -1, duration: null }
         ],
         tips: {
             'Hip Thrust': 'Appoggia le scapole sulla panca. Spingi con i talloni e contrai i glutei in cima. Pausa di 1 secondo al top.',
@@ -248,7 +265,7 @@ function calculateTotalTime(workout) {
     if (workout.isCircuit) {
         return Math.ceil((workout.exercises.length * (workout.exerciseDuration + workout.restDuration)) / 60);
     }
-    const totalRest = workout.exercises.reduce((sum, ex) => sum + (ex.rest || 0), 0);
+    const totalRest = workout.exercises.reduce((sum, ex) => sum + (ex.rest === -1 ? 0 : (ex.rest || 0)), 0);
     // Assume average 60 seconds per exercise for rep-based workouts
     const estimatedExerciseTime = workout.exercises.length * 60;
     return Math.ceil((totalRest + estimatedExerciseTime) / 60);
@@ -282,16 +299,19 @@ function selectWorkout(workoutId) {
     
     // Render exercise list
     const borderClass = currentWorkout.color === 'green' ? 'green-border' : '';
-    elements.exerciseList.innerHTML = currentWorkout.exercises.map((exercise, index) => `
+    elements.exerciseList.innerHTML = currentWorkout.exercises.map((exercise, index) => {
+        const restDisplay = exercise.rest === -1 ? 'Pausa' : `${exercise.rest}s`;
+        return `
         <div class="exercise-item ${borderClass}">
             <span class="exercise-num">${index + 1}</span>
             <div class="exercise-content">
                 <h4 class="exercise-name">${exercise.name}</h4>
                 <p class="exercise-meta">${exercise.details}</p>
             </div>
-            <span class="exercise-rest">${exercise.rest}s</span>
+            <span class="exercise-rest">${restDisplay}</span>
         </div>
-    `).join('');
+        `;
+    }).join('');
     
     showScreen('preview');
 }
@@ -402,6 +422,18 @@ function startRest() {
     isResting = true;
     playRestSound();
     
+    if (exercise.rest === -1) {
+        // Manual pause indefinitely until user clicks next
+        elements.timerLabel.textContent = 'PAUSA';
+        elements.timerRing.className = 'timer-ring rest';
+        elements.currentExerciseName.textContent = 'Pausa';
+        elements.currentExerciseDetails.textContent = 'Tocca il pulsante ▶ o ⏭ per continuare';
+        elements.timerValue.textContent = '∞';
+        updateProgressRing(1, 1);
+        hideTips();
+        return;
+    }
+
     elements.timerLabel.textContent = 'RECUPERO';
     elements.timerRing.className = 'timer-ring rest';
     elements.currentExerciseName.textContent = 'Riposo';
@@ -533,7 +565,11 @@ function updateNextExercise() {
 }
 
 function showTip(exerciseName) {
-    const tip = currentWorkout.tips?.[exerciseName];
+    let tip = currentWorkout.tips?.[exerciseName];
+    if (!tip && exerciseName.includes(' - Serie')) {
+        const baseName = exerciseName.split(' - Serie')[0];
+        tip = currentWorkout.tips?.[baseName];
+    }
     if (tip) {
         elements.tipsPanel.classList.remove('hidden');
         elements.tipText.textContent = tip;
