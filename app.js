@@ -82,6 +82,35 @@ const workouts = [
         }
     },
     {
+        id: 'posturale',
+        name: 'Scheda Posturale',
+        subtitle: '10 minuti',
+        icon: '🧘',
+        color: 'blue',
+        isCircuit: true,
+        exerciseDuration: 60,
+        restDuration: 15,
+        exercises: [
+            { name: 'Apertura-Chiusura braccia stese', details: 'Riscaldamento', rest: -1, duration: null },
+            { name: 'Rotazione Spalle', details: 'Riscaldamento', rest: -1, duration: null },
+            { name: 'Rotazione Collo', details: 'Riscaldamento', rest: -1, duration: null },
+            { name: 'Apertura con Rullo', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Rotazione Spalle con Bastone', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Rotazione Busto con Bastone', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Superman Stesa', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Rotazione con Bastone a Terra', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Superman con Elastico', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Apertura alla Porta', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Apertura alla Porta Senza Appoggio', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Superman con Elastico', details: '1 minuto', rest: 15, duration: 60 },
+            { name: 'Rematore', details: '1 minuto', rest: 0, duration: 60 }
+        ],
+        tips: {
+            'Apertura con Rullo': 'Mantieni la schiena dritta e apri bene le braccia.',
+            'Superman Stesa': 'Solleva contemporaneamente braccia e gambe, contraendo i glutei e la zona lombare.'
+        }
+    },
+    {
         id: 'generale',
         name: 'Scheda Generale',
         subtitle: '4 Round Full Body',
